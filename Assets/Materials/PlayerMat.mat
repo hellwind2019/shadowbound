@@ -10,7 +10,7 @@ Material:
   m_Name: PlayerMat
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 2100000, guid: 78ff1ccab4fa78444a736db651870554, type: 2}
-  m_ModifiedSerializedProperties: 0
+  m_ModifiedSerializedProperties: 12
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -24,7 +24,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _Glossiness: 0
+    - _Metallic: 1
+    - _SmoothnessTextureChannel: 0
     m_Colors:
-    - _Color: {r: 0.514151, g: 1, b: 0.530917, a: 1}
+    - _Color: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
   m_BuildTextureStacks: []
