@@ -12,6 +12,7 @@ public class SwitchActivator : MonoBehaviour
 
     private Renderer switchRenderer;
     public GameObject indicator;
+    public GameObject controlledLight;
     private Material localMat;
     private Color originalEmission;
     public Color glowColor = Color.cyan;
@@ -54,6 +55,7 @@ public class SwitchActivator : MonoBehaviour
     {
         localMat.SetColor("_EmissionColor", originalEmission);
         isActive = false;
+        controlledLight.SetActive(false);
     }
 
     private void AcivateSwitch()
@@ -61,6 +63,7 @@ public class SwitchActivator : MonoBehaviour
         localMat.EnableKeyword("_EMISSION");
         localMat.SetColor("_EmissionColor", glowColor * glowStrength);
         isActive = true;
+        controlledLight.SetActive(true);
     }
 
     void OnTriggerEnter(Collider other)
