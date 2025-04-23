@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -25,42 +26,57 @@ public class SwitchActivator : MonoBehaviour
         switchRenderer = indicator.GetComponent<Renderer>();
         localMat = switchRenderer.material;
         originalEmission = localMat.GetColor("_EmissionColor");
-
+        outline.enabled = false;
     }
 
-    // Update is called once per frame
+  
     void Update()
     {
-        if(isPlayerNearby){
-            outline.enabled = true;
-        }
-        else{
-            outline.enabled = false;
-        }
-        if (isPlayerNearby && Input.GetKeyDown(KeyCode.Space))
+       if (isPlayerNearby && Input.GetKeyDown(KeyCode.Space))
         {
-            if (!isActive)
-            {
-                localMat.EnableKeyword("_EMISSION");
-                localMat.SetColor("_EmissionColor", glowColor * glowStrength);
-                isActive = true;
-                
-            }
-            else
-            {
-                localMat.SetColor("_EmissionColor", originalEmission);
-                isActive = false;
-            }
+            ToggleSwitch();
         }
-
 
     }
+    private void ToggleSwitch()
+    {
+        if (!isActive)
+        {
+            AcivateSwitch();
+        }
+        else
+        {
+            DeactivateSwitch();
+        }
+    }
+
+    private void DeactivateSwitch()
+    {
+        localMat.SetColor("_EmissionColor", originalEmission);
+        isActive = false;
+    }
+
+    private void AcivateSwitch()
+    {
+        localMat.EnableKeyword("_EMISSION");
+        localMat.SetColor("_EmissionColor", glowColor * glowStrength);
+        isActive = true;
+    }
+
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) isPlayerNearby = true;
+        if (other.CompareTag("Player"))
+        {
+            isPlayerNearby = true;
+            outline.enabled = true;
+        }
     }
     void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player")) isPlayerNearby = false;
+        if (other.CompareTag("Player"))
+        {
+            isPlayerNearby = false;
+            outline.enabled = false;
+        }
     }
 }
