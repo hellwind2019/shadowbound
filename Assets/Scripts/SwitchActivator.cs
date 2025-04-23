@@ -33,7 +33,7 @@ public class SwitchActivator : MonoBehaviour
   
     void Update()
     {
-       if (isPlayerNearby && Input.GetKeyDown(KeyCode.Space))
+       if (isPlayerNearby && Input.GetKeyDown(KeyCode.E))
         {
             ToggleSwitch();
         }

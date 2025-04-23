@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private int direction = 0;
     [SerializeField] float speed;
     [SerializeField] float maxSpeedX;
+    [SerializeField] float jumpForce = 7f;
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
@@ -20,11 +21,15 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.A)) direction = -1;
-        else if(Input.GetKey(KeyCode.D)) direction = 1;
-        else direction = 0;
+        if     (Input.GetKey(KeyCode.A)) direction = -1;
+        else if(Input.GetKey(KeyCode.D)) direction =  1;
+        else                             direction =  0;
         if(Math.Abs(rb.velocity.x) > maxSpeedX) rb.velocity = new Vector3(Math.Sign(rb.velocity.x) * maxSpeedX, rb.velocity.y, rb.velocity.z);
         
+        if (Input.GetKeyDown(KeyCode.Space) && rb.velocity.y == 0)
+        {
+            rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
+        }
     }
     void FixedUpdate()
     {
