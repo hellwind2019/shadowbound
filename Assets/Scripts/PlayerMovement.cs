@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float maxSpeedX;
     [SerializeField] float jumpForce = 7f;
+    [SerializeField] float rotationSpeed = 5f; 
+
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
@@ -30,7 +32,21 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
         }
+        if(direction != 0)
+        {
+           RotatePlayer(direction);
+        }
+        
     }
+
+    private void RotatePlayer(int direction)
+    {
+        float targetAngle = direction == -1 ? 180f : 0f;
+        Quaternion currentRotation = transform.rotation;
+        Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
+        transform.rotation = Quaternion.Lerp(currentRotation, targetRotation, Time.deltaTime * rotationSpeed);
+    }
+
     void FixedUpdate()
     {
         rb.AddForce(new Vector3(direction * speed, 0, 0));
