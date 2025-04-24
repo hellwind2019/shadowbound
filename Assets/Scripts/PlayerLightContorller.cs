@@ -9,6 +9,10 @@ public class PlayerLightContorller : MonoBehaviour
     public float maxIntencity = 5f;
     public float minIntencity = 0.5f;
     public float intencityChangeSpeed = 1f;
+    public float lightZoneTemperature = 1500f; // Температура в світлій зоні
+    public float darkZoneTemperature = 11000f; // Температура в темряві
+    public float temperatureChangeSpeed = 1f; // Швидкість зміни температури
+
     private bool isInLightZone = false;
     private float ligthZoneIntensity = 0f;
 
@@ -20,13 +24,17 @@ public class PlayerLightContorller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(isInLightZone)
+        if (isInLightZone)
         {
-            playerLight.intensity = Mathf.Lerp(playerLight.intensity, maxIntencity,  ligthZoneIntensity * Time.deltaTime);
+            playerLight.intensity = Mathf.Lerp(playerLight.intensity, maxIntencity, ligthZoneIntensity * Time.deltaTime);
+            playerLight.colorTemperature = Mathf.Lerp(playerLight.colorTemperature, lightZoneTemperature, temperatureChangeSpeed * Time.deltaTime);
+
         }
         else
         {
             playerLight.intensity = Mathf.Lerp(playerLight.intensity, minIntencity, intencityChangeSpeed * Time.deltaTime);
+            playerLight.colorTemperature = Mathf.Lerp(playerLight.colorTemperature, darkZoneTemperature, temperatureChangeSpeed * Time.deltaTime);
+
         }
     }
     void OnTriggerEnter(Collider other)

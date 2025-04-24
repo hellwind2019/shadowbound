@@ -13,7 +13,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float maxSpeedX;
     [SerializeField] float jumpForce = 7f;
-    [SerializeField] float rotationSpeed = 5f; 
+    [SerializeField] float rotationSpeed = 5f;
+    private int previousDirection = 0;
 
     void Start()
     {
@@ -23,20 +24,36 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if     (Input.GetKey(KeyCode.A)) direction = -1;
-        else if(Input.GetKey(KeyCode.D)) direction =  1;
-        else                             direction =  0;
-        if(Math.Abs(rb.velocity.x) > maxSpeedX) rb.velocity = new Vector3(Math.Sign(rb.velocity.x) * maxSpeedX, rb.velocity.y, rb.velocity.z);
-        
+        if (Input.GetKey(KeyCode.A))
+        {
+            direction = -1;
+            previousDirection = -1;
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            direction = 1;
+            previousDirection = 1;
+        }
+        else direction = 0;
+
+        if (Math.Abs(rb.velocity.x) > maxSpeedX) rb.velocity = new Vector3(Math.Sign(rb.velocity.x) * maxSpeedX, rb.velocity.y, rb.velocity.z);
+
         if (Input.GetKeyDown(KeyCode.Space) && rb.velocity.y == 0)
         {
             rb.AddForce(new Vector3(0, jumpForce, 0), ForceMode.Impulse);
         }
-        if(direction != 0)
+        if (direction != 0)
         {
-           RotatePlayer(direction);
+            RotatePlayer(direction);
         }
-        
+        else
+        {
+            float targetAngle = previousDirection == -1 ? 180f : 0f;
+            Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        }
+
+
     }
 
     private void RotatePlayer(int direction)
@@ -44,7 +61,8 @@ public class PlayerMovement : MonoBehaviour
         float targetAngle = direction == -1 ? 180f : 0f;
         Quaternion currentRotation = transform.rotation;
         Quaternion targetRotation = Quaternion.Euler(0, targetAngle, 0);
-        transform.rotation = Quaternion.Lerp(currentRotation, targetRotation, Time.deltaTime * rotationSpeed);
+        transform.rotation = Quaternion.RotateTowards(currentRotation, targetRotation, Time.deltaTime * rotationSpeed);
+
     }
 
     void FixedUpdate()
