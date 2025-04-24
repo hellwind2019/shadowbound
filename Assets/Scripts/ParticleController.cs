@@ -26,17 +26,17 @@ public class ParticleController : MonoBehaviour
 
     void Update()
     {
-        // Обчислення відстані до гравця
+        
         float distance = Vector3.Distance(transform.position, player.position);
 
-        // Обчислення кутової швидкості залежно від відстані
+      
         float angularVelocity = 0f;
         if (distance <= proximityThreshold)
         {
             angularVelocity = Mathf.Lerp(0, maxAngularVelocity, 1 - (distance / proximityThreshold));
         }
 
-        // Застосування кутової швидкості до осі Y
+    
         velocityOverLifetime.orbitalY = angularVelocity;
         float emissionRate = 0f;
         if (distance <= proximityThreshold)
@@ -44,7 +44,6 @@ public class ParticleController : MonoBehaviour
             emissionRate = Mathf.Lerp(0, maxEmissionRate, 1 - (distance / proximityThreshold));
         }
 
-        // Застосування кількості частинок
         var rateOverTime = emissionModule.rateOverTime;
         rateOverTime.constant = emissionRate;
         emissionModule.rateOverTime = rateOverTime;
